@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTasksbyID, deleteTaskByID, getTasks, createTask } from '../db/tasks';
+import { getTasksbyID, deleteTaskByID, getTasks, createTask, TaskModel } from '../db/tasks';
 
 export const getAllTasks = async (req: express.Request, res: express.Response) => {
     try {
@@ -62,17 +62,24 @@ export const updateATask = async (req: express.Request, res: express.Response) =
         const {id} = req.params;
         const {title, description, type, createdOn, status} = req.body;
 
-        const task =await getTasksbyID(id);
-        task.title = title;
-        task.description =description;
-        task.type = type;
-        task.createdOn = createdOn;
-        task.status = status;
+        const updatedTask =await TaskModel.findByIdAndUpdate(
+            id,
+            {
+                title,
+                description,
+                type,
+                createdOn,
+                status
+            },
+            { new: true }
+        );
         
+        if (!updatedTask) {
+            return res.sendStatus(400);
+        }
 
-         await task.save();
-
-        return res.status(200).json(task).end();
+        return res.status(200).json(updatedTask)
+         
     }
     catch (error) {
         console.log(error);
