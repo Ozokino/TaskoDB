@@ -1,0 +1,1 @@
+export const MONGO_URL = 'mongodb+srv://Ozokino:BLcRHxFAZylQHqKZ@taskdata.mzba1uw.mongodb.net/?retryWrites=true&w=majority&appName=TaskData';

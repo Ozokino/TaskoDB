@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose, { modelNames } from 'mongoose';
 import router from './router';
+import { MONGO_URL } from 'env';
 
 const app = express();
 
@@ -23,9 +24,6 @@ server.listen(8080, () => {
     console.log('Serveris ir labs klausītājs')
 });
 
-const MONGO_URL = 'mongodb+srv://Ozokino:BLcRHxFAZylQHqKZ@taskdata.mzba1uw.mongodb.net/?retryWrites=true&w=majority&appName=TaskData';
-
-mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
