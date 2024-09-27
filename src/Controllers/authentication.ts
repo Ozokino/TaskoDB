@@ -4,7 +4,7 @@ import { authentication, random } from '../helpers';
 
 export const register = async (req: express.Request, res: express.Response) => {
     try {
-        const { username, password } = req.body;
+        const { firstName, lastName, username, password } = req.body;
 
         if (!username || !password) {
             return res.sendStatus(400);
@@ -17,6 +17,8 @@ export const register = async (req: express.Request, res: express.Response) => {
         }
         const salt = random();
         const user = await createUser({
+            firstName,
+            lastName,
             username,
             authentication: {
                 salt,

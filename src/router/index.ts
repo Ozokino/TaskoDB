@@ -1,7 +1,7 @@
 import express from 'express';
-import tasks from './tasks';
-import authentication from './authentication';
-import users from './users';
+import tasks from '../router/tasks';
+import authentication from '../router/authentication';
+import users from '../router/users';
 
 const router = express.Router();
 export default (): express.Router =>{

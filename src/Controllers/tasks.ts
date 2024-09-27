@@ -1,6 +1,6 @@
 import express from 'express';
 import { getTasksbyID, deleteTaskByID, getTasks, createTask, TaskModel } from '../db/tasks';
-
+import { UserModel } from '../db/users';
 export const getAllTasks = async (req: express.Request, res: express.Response) => {
     try {
         const tasks = await getTasks();
@@ -26,7 +26,7 @@ export const getATask = async (req: express.Request, res: express.Response) => {
 
 export const createATask = async (req: express.Request, res: express.Response) => {
     try {
-        const { title, description, type, createdOn, status } = req.body;
+        const { title, description, type, createdOn, status, assignedTo } = req.body;
 
         if (!title || !description || !type || !createdOn || !status) {
             return res.sendStatus(400);
@@ -37,7 +37,8 @@ export const createATask = async (req: express.Request, res: express.Response) =
             description,
             type,
             createdOn,
-            status
+            status,
+            assignedTo: assignedTo || 'UNASSIGNED'
         });
         return res.status(200).json(task).end();
     }
@@ -61,7 +62,7 @@ export const deleteATask = async (req: express.Request, res: express.Response) =
 export const updateATask = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params;
-        const {title, description, type, createdOn, status} = req.body;
+        const {title, description, type, createdOn, status, assignedTo} = req.body;
 
         const updatedTask =await TaskModel.findByIdAndUpdate(
             id,
@@ -70,7 +71,8 @@ export const updateATask = async (req: express.Request, res: express.Response) =
                 description,
                 type,
                 createdOn,
-                status
+                status,
+                assignedTo: assignedTo || 'UNASSIGNED'
             },
             { new: true }
         );

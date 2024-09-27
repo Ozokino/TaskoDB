@@ -21,12 +21,11 @@ export const getUser = async (req: express.Request, res: express.Response) => {
         return res.sendStatus(400);
     }
 };
-export const deleteAUser = async (req: express.Request, res: express.Response) =>{
+export const deleteAUser = async (req: express.Request, res: express.Response) => {
     try {
-        const {id} = req.params;
-        await deleteUserByID(id);
-        const tasks = await getUsers();
-        return res.status(200).json(tasks);    
+        const userId = req.params.id;
+        const deletedUser = await deleteUserByID(userId);
+        return res.status(200).json(deletedUser);
     }
     catch (error) {
         console.log(error);
@@ -36,19 +35,23 @@ export const deleteAUser = async (req: express.Request, res: express.Response) =
 };
 export const updateAUser = async (req: express.Request, res: express.Response) => {
     try {
-        const {id} = req.params;
-        const {username} =req.body;
-        if (!username) {
+        const { id } = req.params;
+        const {firstName, lastName, username } = req.body;
+
+        if (!username && !firstName && !lastName) {
             return res.sendStatus(400);
         }
-        const user= await getUserByID(id);
+        const user = await getUserByID(id);
 
-        username.username =username;
-        await user.save();
+        if (username) user.username = username;
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
         
+        await user.save();
 
-        return res.status(200).json(user).end;
-         
+
+        return res.status(200).json(user);
+
     }
     catch (error) {
         console.log(error);

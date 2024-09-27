@@ -5,7 +5,8 @@ const TaskSchema = new mongoose.Schema({
     description :{type: String, required: true},
     type : {type: String, required: true},
     createdOn : {type: String, required: true}, 
-    status : {type: String, required: true}
+    status : {type: String, required: true},
+    assignedTo : {type: String, default: 'UNNASSIGNED'}
 });
 
 export const TaskModel = mongoose.model('Task', TaskSchema);
